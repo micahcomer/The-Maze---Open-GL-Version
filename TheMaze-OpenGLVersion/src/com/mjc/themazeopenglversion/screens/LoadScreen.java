@@ -1,8 +1,8 @@
-package com.mjc.themaze_openglversion.screens;
+package com.mjc.themazeopenglversion.screens;
 
 import com.badlogic.gdx.Screen;
 
-public class GameScreen implements Screen{
+public class LoadScreen implements Screen{
 
 	@Override
 	public void dispose() {

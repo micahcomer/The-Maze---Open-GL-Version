@@ -1,4 +1,4 @@
-package com.mjc.themaze_openglversion.screens;
+package com.mjc.themazeopenglversion.screens;
 
 import com.badlogic.gdx.Screen;
 

@@ -1,18 +1,23 @@
-package com.mjc.themaze_openglversion;
+package com.mjc.themazeopenglversion;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Screen;
-import com.mjc.themaze_openglversion.screens.GameScreen;
-import com.mjc.themaze_openglversion.screens.LoadScreen;
-import com.mjc.themaze_openglversion.screens.PauseScreen;
-import com.mjc.themaze_openglversion.screens.StartScreen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mjc.themazeopenglversion.screens.GameScreen;
+import com.mjc.themazeopenglversion.screens.LoadScreen;
+import com.mjc.themazeopenglversion.screens.PauseScreen;
+import com.mjc.themazeopenglversion.screens.StartScreen;
 
 public class GameApplication implements ApplicationListener{
 
-	private static StartScreen startScreen;
-	private static LoadScreen loadScreen;
-	private static GameScreen gameScreen;
-	private static PauseScreen pauseScreen;
+	private AssetManager assetManager;
+	private SpriteBatch spriteBatch;
+	
+	private StartScreen startScreen;
+	private LoadScreen loadScreen;
+	private GameScreen gameScreen;
+	private PauseScreen pauseScreen;
 	private Screen currentScreen;
 	
 	private long delta;
@@ -20,6 +25,14 @@ public class GameApplication implements ApplicationListener{
 	@Override
 	public void create() {
 		//Game Screen Manager initialization code should go here.
+		assetManager = new AssetManager();
+		spriteBatch = new SpriteBatch();
+		startScreen = new StartScreen(assetManager, spriteBatch);
+		loadScreen = new LoadScreen();
+		gameScreen = new GameScreen();
+		pauseScreen = new PauseScreen();
+		
+		
 		startScreen.show();
 		loadScreen.hide();
 		gameScreen.hide();

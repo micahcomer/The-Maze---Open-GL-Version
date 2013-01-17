@@ -1,7 +1,9 @@
-package com.mjc.themaze_openglversion;
+package com.mjc.themazeopenglversion;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.mjc.themaze_openglversion.R;
+
 import android.os.Bundle;
 import android.view.Menu;
 
