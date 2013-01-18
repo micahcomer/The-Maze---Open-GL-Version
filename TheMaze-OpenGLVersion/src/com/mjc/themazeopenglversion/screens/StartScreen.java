@@ -33,8 +33,13 @@ public class StartScreen implements Screen, EventListener{
 	public StartScreen(AssetManager assetManager, SpriteBatch spriteBatch){
 		
 		screenDimensions = new Vector2 (Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
+		//Apparently I need to "create a 'stage' and add 'actors' to it.  I don't really get this part, but I just followed the documentation.
 		setStage();		
-		setBackground(assetManager);
+		
+		//This started out just setting the background, but I added the start button in this method too.  Buttons should be split out separately later.
+		setBackground(assetManager);		
+		
 		this.spriteBatch = spriteBatch;
 		
 	}
@@ -50,17 +55,34 @@ public class StartScreen implements Screen, EventListener{
 	
 	private void setBackground(AssetManager assetManager){
 		
+		//Queue assets to load...
 		assetManager.load("startscreen_background.png", Texture.class);		
-		assetManager.load("button_start.png", Texture.class);			
-		assetManager.finishLoading();			
+		assetManager.load("button_start.png", Texture.class);
+		
+		//Wait till they finish loading...
+		assetManager.finishLoading();		
+		
+		//Assign the assets that just loaded...
 		background = assetManager.get("startscreen_background.png", Texture.class);
 		Texture startButtonTexture = assetManager.get("button_start.png", Texture.class);
+		
+		//Run "texture through 2 other thingys to turn it into a "TextureRegiionDrawable, which is what the "Button" constructor needs.
 		TextureRegion startButtonTR = new TextureRegion(startButtonTexture);
 		TextureRegionDrawable startButtonTRD = new TextureRegionDrawable(startButtonTR);
+		
+		//Create the start button
 		startButton = new Button(startButtonTRD);	
+		
+		//Define how big it is.
 		startButton.setBounds(0f, 0f, 400, 100);
+		
+		//Move it to where it should go on the screen.
 		startButton.setPosition(((float)screenDimensions.x)*(3.5f/5f), (float)(screenDimensions.y)*(3f/4f));
+		
+		//Tell it to notify this class (StartScreen) when clicked.
 		startButton.addListener(this);
+		
+		//Add it to the stage so it will "act" and "draw" when the stage does.
 		stage.addActor(startButton);		
 		
 	}
