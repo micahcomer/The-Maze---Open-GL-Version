@@ -1,6 +1,8 @@
 package com.mjc.themazeopenglversion;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,36 +11,30 @@ import com.mjc.themazeopenglversion.screens.LoadScreen;
 import com.mjc.themazeopenglversion.screens.PauseScreen;
 import com.mjc.themazeopenglversion.screens.StartScreen;
 
-public class GameApplication implements ApplicationListener{
+public class GameApplication extends Game implements ApplicationListener{
 
 	private AssetManager assetManager;
 	private SpriteBatch spriteBatch;
 	
-	private StartScreen startScreen;
-	private LoadScreen loadScreen;
-	private GameScreen gameScreen;
-	private PauseScreen pauseScreen;
-	private Screen currentScreen;
-	
-	private long delta;
+	StartScreen startScreen;
+	LoadScreen loadScreen;
+	GameScreen gameScreen;
+	PauseScreen pauseScreen;
 	
 	@Override
 	public void create() {
 		//Game Screen Manager initialization code should go here.
 		assetManager = new AssetManager();
 		spriteBatch = new SpriteBatch();
-		startScreen = new StartScreen(assetManager, spriteBatch);
+		
+		startScreen = new StartScreen(assetManager, spriteBatch, this);
 		loadScreen = new LoadScreen();
 		gameScreen = new GameScreen();
 		pauseScreen = new PauseScreen();
-		
-		
-		startScreen.show();
-		loadScreen.hide();
-		gameScreen.hide();
-		pauseScreen.hide();
-		currentScreen = startScreen;
+				
+		setScreen(startScreen);
 	}
+	
 
 	@Override
 	public void dispose() {
@@ -54,7 +50,7 @@ public class GameApplication implements ApplicationListener{
 
 	@Override
 	public void render() {
-		currentScreen.render(delta);		
+	this.getScreen().render(Gdx.graphics.getDeltaTime());			
 	}
 
 	@Override
@@ -67,6 +63,10 @@ public class GameApplication implements ApplicationListener{
 	public void resume() {
 		// Unpausing code should go here.
 		
+	}
+	
+	public void startGame(){
+		setScreen(loadScreen);
 	}
 
 }
