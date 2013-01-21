@@ -16,7 +16,7 @@ public class LoadScreen implements Screen{
 	AssetManager assetManager;
 	Point screenDimensions;
 	SpriteBatch spriteBatch;
-	TextureRegion background;
+	Texture background;
 	
 	public LoadScreen(AssetManager assetManager, Game game, SpriteBatch spriteBatch){
 		this.assetManager = assetManager;
@@ -48,7 +48,7 @@ public class LoadScreen implements Screen{
 	public void render(float arg0) {
 		
 		spriteBatch.begin();
-		//spriteBatch.draw(background, 0,0,)
+		spriteBatch.draw(background, 0, 0, screenDimensions.x, screenDimensions.y, 0,0, background.getWidth(), background.getHeight(), false, false); 
 		spriteBatch.end();
 		
 	}
@@ -74,7 +74,7 @@ public class LoadScreen implements Screen{
 	private void loadAssets(){
 		assetManager.load("loadingbackground.png", Texture.class);
 		assetManager.finishLoading();
-		background = new TextureRegion(assetManager.get("loadingbackground.png", Texture.class));
+		background = assetManager.get("loadingbackground.png", Texture.class);
 	}
 
 }
