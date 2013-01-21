@@ -32,7 +32,7 @@ public class GameApplication extends Game implements ApplicationListener{
 		spriteBatch = new SpriteBatch();
 		audio = Gdx.audio;
 		startScreen = new StartScreen(assetManager, spriteBatch, this, audio);
-		loadScreen = new LoadScreen();
+		loadScreen = new LoadScreen(assetManager, this, spriteBatch);
 		gameScreen = new GameScreen();
 		pauseScreen = new PauseScreen();				
 		setScreen(startScreen);

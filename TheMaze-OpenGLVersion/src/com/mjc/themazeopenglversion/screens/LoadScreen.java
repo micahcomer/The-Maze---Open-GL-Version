@@ -1,9 +1,31 @@
 package com.mjc.themazeopenglversion.screens;
 
+import android.graphics.Point;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class LoadScreen implements Screen{
 
+	Game game;
+	AssetManager assetManager;
+	Point screenDimensions;
+	SpriteBatch spriteBatch;
+	TextureRegion background;
+	
+	public LoadScreen(AssetManager assetManager, Game game, SpriteBatch spriteBatch){
+		this.assetManager = assetManager;
+		this.game = game;
+		loadAssets();
+		screenDimensions = new Point (Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.spriteBatch = spriteBatch;
+	}
+	
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
@@ -24,7 +46,10 @@ public class LoadScreen implements Screen{
 
 	@Override
 	public void render(float arg0) {
-		// TODO Auto-generated method stub
+		
+		spriteBatch.begin();
+		//spriteBatch.draw(background, 0,0,)
+		spriteBatch.end();
 		
 	}
 
@@ -44,6 +69,12 @@ public class LoadScreen implements Screen{
 	public void show() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void loadAssets(){
+		assetManager.load("loadingbackground.png", Texture.class);
+		assetManager.finishLoading();
+		background = new TextureRegion(assetManager.get("loadingbackground.png", Texture.class));
 	}
 
 }
