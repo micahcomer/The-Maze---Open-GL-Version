@@ -1,8 +1,10 @@
 package com.mjc.themazeopenglversion.screens;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -43,12 +46,15 @@ public class StartScreen implements Screen, EventListener {
 	SpriteBatch spriteBatch;
 
 	private Stage stage;
+	
+	private Sound clickSound;
+	boolean soundFXEnabled = true;
+	boolean musicEnabled = true;
 
 	public StartScreen(AssetManager assetManager, SpriteBatch spriteBatch,
-			GameApplication game) {
+			GameApplication game, Audio audio) {
 
-		screenDimensions = new Vector2(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
+		screenDimensions = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		verticalBorderAmount = -25;
 		horizontalBorderAmount = 45;
 		lineSpacing = 50;
@@ -62,8 +68,9 @@ public class StartScreen implements Screen, EventListener {
 		setBackground(assetManager);
 		createButtons(assetManager);
 		this.spriteBatch = spriteBatch;
-		
-		this.game = game;
+
+		this.game = game;		
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("click.mp3") );
 	}
 
 	private void setStage() {
@@ -111,10 +118,10 @@ public class StartScreen implements Screen, EventListener {
 
 		// Move it to where it should go on the screen.
 		startButton
-				.setPosition(screenDimensions.x
-						- (verticalBorderAmount + buttonColumnWidth),
-						screenDimensions.y
-								- (horizontalBorderAmount + buttonRowHeight));
+		.setPosition(screenDimensions.x
+				- (verticalBorderAmount + buttonColumnWidth),
+				screenDimensions.y
+				- (horizontalBorderAmount + buttonRowHeight));
 
 		// Tell it to notify this class (StartScreen) when clicked.
 		startButton.addListener(this);
@@ -153,11 +160,11 @@ public class StartScreen implements Screen, EventListener {
 
 		// Move it to where it should go on the screen.
 		continueButton
-				.setPosition(
-						screenDimensions.x
-								- (verticalBorderAmount + buttonColumnWidth),
-						screenDimensions.y
-								- (horizontalBorderAmount + buttonRowHeight * 2 + lineSpacing));
+		.setPosition(
+				screenDimensions.x
+				- (verticalBorderAmount + buttonColumnWidth),
+				screenDimensions.y
+				- (horizontalBorderAmount + buttonRowHeight * 2 + lineSpacing));
 
 		// Tell it to notify this class (StartScreen) when clicked.
 		continueButton.addListener(this);
@@ -187,11 +194,11 @@ public class StartScreen implements Screen, EventListener {
 
 		// Move it to where it should go on the screen.
 		exitButton
-				.setPosition(
-						screenDimensions.x
-								- (verticalBorderAmount + buttonColumnWidth),
-						screenDimensions.y
-								- (horizontalBorderAmount + buttonRowHeight * 3 + lineSpacing * 2));
+		.setPosition(
+				screenDimensions.x
+				- (verticalBorderAmount + buttonColumnWidth),
+				screenDimensions.y
+				- (horizontalBorderAmount + buttonRowHeight * 3 + lineSpacing * 2));
 
 		// Tell it to notify this class (StartScreen) when clicked.
 		exitButton.addListener(this);
@@ -231,21 +238,22 @@ public class StartScreen implements Screen, EventListener {
 		s.checkboxOff.setMinHeight(buttonRowHeight);
 		s.checkboxOff.setMinWidth(buttonRowHeight);
 		soundFXButton = new CheckBox("", s);
-		
+		soundFXButton.setChecked(true);
+
 
 		// Define how big it is.
 		soundFXButton.setBounds(0f, 0f, buttonRowHeight, buttonRowHeight);
 
 		// Move it to where it should go on the screen.
 		soundFXButton
-				.setPosition(
-						screenDimensions.x
-								- (buttonColumnWidth + verticalBorderAmount * 4),
-						screenDimensions.y
-								- (horizontalBorderAmount + buttonRowHeight * 4 + lineSpacing * 3));
+		.setPosition(
+				screenDimensions.x
+				- (buttonColumnWidth + verticalBorderAmount * 4),
+				screenDimensions.y
+				- (horizontalBorderAmount + buttonRowHeight * 4 + lineSpacing * 3));
 
-		
-		
+
+
 		// Tell it to notify this class (StartScreen) when clicked.
 		soundFXButton.addListener(this);
 
@@ -282,19 +290,20 @@ public class StartScreen implements Screen, EventListener {
 		s.checkboxOn.setMinWidth(buttonRowHeight);
 		s.checkboxOff = musicButtonInactiveTRD;
 		s.checkboxOff.setMinHeight(buttonRowHeight);
-		s.checkboxOff.setMinWidth(buttonRowHeight);
+		s.checkboxOff.setMinWidth(buttonRowHeight);		
 		musicButton = new CheckBox("", s);
+		musicButton.setChecked(true);
 
 		// Define how big it is.
 		musicButton.setBounds(0f, 0f, buttonRowHeight, buttonRowHeight);
 
 		// Move it to where it should go on the screen.
 		musicButton
-				.setPosition(
-						screenDimensions.x
-								- (-verticalBorderAmount * 2 + buttonRowHeight),
-						screenDimensions.y
-								- (horizontalBorderAmount + buttonRowHeight * 4 + lineSpacing * 3));
+		.setPosition(
+				screenDimensions.x
+				- (-verticalBorderAmount * 2 + buttonRowHeight),
+				screenDimensions.y
+				- (horizontalBorderAmount + buttonRowHeight * 4 + lineSpacing * 3));
 
 		// Tell it to notify this class (StartScreen) when clicked.
 		musicButton.addListener(this);
@@ -324,7 +333,7 @@ public class StartScreen implements Screen, EventListener {
 
 	@Override
 	public void render(float arg0) {
-		
+
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		spriteBatch.begin();
@@ -339,7 +348,7 @@ public class StartScreen implements Screen, EventListener {
 		stage.draw();
 	}
 
-	
+
 	@Override
 	public void resize(int arg0, int arg1) {
 		// TODO Auto-generated method stub
@@ -356,39 +365,81 @@ public class StartScreen implements Screen, EventListener {
 	public void show() {
 
 	}
-	
+
 	@Override
 	public boolean handle(Event e) {
 
-		if (e.getListenerActor() == startButton) {
-			startGame();
-			return true;
-		} else {
-			if (e.getListenerActor() == continueButton) {
-				continueGame();
+		if ((e instanceof InputEvent) && ((InputEvent)e).getType().equals(InputEvent.Type.touchDown)){
+
+			if (e.getListenerActor() == startButton) {
+				playClick();
+				startGame();
 				return true;
 			} else {
-				if (e.getListenerActor() == exitButton) {
-					exitGame();
+				if (e.getListenerActor() == continueButton) {
+					playClick();
+					continueGame();
 					return true;
-				}else				
-				return false;
+				} else {
+					if (e.getListenerActor() == exitButton) {
+						playClick();
+						exitGame();
+						return true;
+					}else			
+						if (e instanceof InputEvent){
+							if (e.getListenerActor().equals(musicButton)){
+								playClick();
+								toggleMusic();
+								return true;
+							}
+							else{
+								if (e.getListenerActor().equals(soundFXButton)){							
+									toggleSoundFX();
+									playClick();
+									return true;
+								}
+								else{
+									return false;
+								}
+							}
+						}else{
+							return false;
+						}
+				}
 			}
-		}//end continue
-	}
-
-	
-	private void exitGame() {
-		Gdx.app.exit();
-	}
-
-	private void continueGame() {
-		// TODO Auto-generated method stub
-
+		}else
+		{
+			return false;
+		}
 	}
 
 	private void startGame() {
 		game.startGame();
+	}
+
+	private void continueGame() {
+		// TODO Auto-generated method stub
+	
+	}
+
+	private void exitGame() {
+		Gdx.app.exit();
+	}
+
+	private void toggleMusic(){
+		musicEnabled = !musicEnabled;
+		game.toggleMusic();
+	}
+
+	private void toggleSoundFX(){
+		soundFXEnabled = !soundFXEnabled;
+		game.toggleSoundFX();
+	}
+
+	private void playClick(){
+		if ((soundFXEnabled)){
+			clickSound.play(1.0f);
+		}
 	}
 
 	private void loadAssets(AssetManager assetManager) {

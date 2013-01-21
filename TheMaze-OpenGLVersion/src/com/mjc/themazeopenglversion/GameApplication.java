@@ -1,9 +1,9 @@
 package com.mjc.themazeopenglversion;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mjc.themazeopenglversion.screens.GameScreen;
@@ -21,17 +21,20 @@ public class GameApplication extends Game implements ApplicationListener{
 	GameScreen gameScreen;
 	PauseScreen pauseScreen;
 	
+	Audio audio;
+	boolean soundFXEnabled = true;
+	boolean musicEnabled = true;
+	
 	@Override
 	public void create() {
 		//Game Screen Manager initialization code should go here.
 		assetManager = new AssetManager();
 		spriteBatch = new SpriteBatch();
-		
-		startScreen = new StartScreen(assetManager, spriteBatch, this);
+		audio = Gdx.audio;
+		startScreen = new StartScreen(assetManager, spriteBatch, this, audio);
 		loadScreen = new LoadScreen();
 		gameScreen = new GameScreen();
-		pauseScreen = new PauseScreen();
-				
+		pauseScreen = new PauseScreen();				
 		setScreen(startScreen);
 	}
 	
@@ -67,6 +70,14 @@ public class GameApplication extends Game implements ApplicationListener{
 	
 	public void startGame(){
 		setScreen(loadScreen);
+	}
+	
+	public void toggleMusic(){
+		musicEnabled = !musicEnabled;
+	}
+	
+	public void toggleSoundFX(){
+		soundFXEnabled = !soundFXEnabled;
 	}
 
 }
