@@ -1,5 +1,11 @@
 package com.mjc.themazeopenglversion.screens;
 
+import java.util.Random;
+
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mjc.themazeopenglversion.GameApplication;
+
 
 public class StartScreen implements Screen, EventListener {
 
@@ -51,8 +59,7 @@ public class StartScreen implements Screen, EventListener {
 	boolean soundFXEnabled = true;
 	boolean musicEnabled = true;
 
-	public StartScreen(AssetManager assetManager, SpriteBatch spriteBatch,
-			GameApplication game, Audio audio) {
+	public StartScreen(AssetManager assetManager, SpriteBatch spriteBatch, GameApplication game, Audio audio) {
 
 		screenDimensions = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		verticalBorderAmount = -25;
@@ -122,13 +129,28 @@ public class StartScreen implements Screen, EventListener {
 				- (verticalBorderAmount + buttonColumnWidth),
 				screenDimensions.y
 				- (horizontalBorderAmount + buttonRowHeight));
+		startButton.setOrigin(startButtonTexture.getWidth()/2, startButtonTexture.getHeight()/2);
 
 		// Tell it to notify this class (StartScreen) when clicked.
 		startButton.addListener(this);
-
+		startButton.addAction(getActionSequenceForButtons(new Random().nextFloat()));
+		
+		
 		// Add it to the stage so it will "act" and "draw" when the stage does.
 		stage.addActor(startButton);
 
+	}
+	
+	private RepeatAction getActionSequenceForButtons(float delay){
+		
+		RepeatAction ra = new RepeatAction();
+		SequenceAction sa = new SequenceAction();
+		sa.addAction(Actions.delay(delay));
+		sa.addAction(Actions.sizeBy(5, 5, .75f));
+		sa.addAction(Actions.sizeBy(-5, -5, .75f));
+		ra.setAction(sa);
+		ra.setCount(RepeatAction.FOREVER);
+		return ra;
 	}
 
 	private void createContinueButton(AssetManager assetManager) {
@@ -154,7 +176,7 @@ public class StartScreen implements Screen, EventListener {
 		// Create the start button
 		continueButton = new Button(continueButtonActiveTRD,
 				continueButtonInactiveTRD);
-
+		continueButton.addAction(getActionSequenceForButtons(new Random().nextFloat()));
 		// Define how big it is.
 		continueButton.setBounds(0f, 0f, buttonColumnWidth, buttonRowHeight);
 
@@ -202,7 +224,7 @@ public class StartScreen implements Screen, EventListener {
 
 		// Tell it to notify this class (StartScreen) when clicked.
 		exitButton.addListener(this);
-
+		exitButton.addAction(getActionSequenceForButtons(new Random().nextFloat()));
 		// Add it to the stage so it will "act" and "draw" when the stage does.
 		stage.addActor(exitButton);
 
@@ -347,7 +369,6 @@ public class StartScreen implements Screen, EventListener {
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
-
 
 	@Override
 	public void resize(int arg0, int arg1) {
